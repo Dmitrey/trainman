@@ -42,4 +42,3 @@ public class MyContactListener implements ContactListener {
 
     }
 }
-

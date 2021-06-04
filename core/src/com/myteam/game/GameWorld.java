@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
+import com.myteam.game.gameobjects.Person;
 
 public class GameWorld {
 
@@ -60,10 +61,11 @@ public class GameWorld {
         Body ramp2 = createRectangleBodyWithCustomShape(BodyDef.BodyType.StaticBody,0.5f, 1, polygonShapeExp);
 
         //создание частей машины
-        carBody = createRectangleBody(BodyDef.BodyType.DynamicBody, new Vector2(150,210), 100,30, 0.7f, 0.5f);
+        carBody = createRectangleBody(BodyDef.BodyType.DynamicBody, new Vector2(150,210), 100,30, 0.5f, 0.5f);
         frontWheel = createCircleBody(BodyDef.BodyType.DynamicBody, new Vector2(80,310), 25, 0.5f, 0.5f);
         backWheel = createCircleBody(BodyDef.BodyType.DynamicBody, new Vector2(230,310), 25, 0.5f, 0.5f);
-
+        Person person = new Person(world);
+        person.compilePerson();
         //соединение частей машины
         WheelJointDef wheelJointDef = new WheelJointDef();
         wheelJointDef.bodyA = frontWheel;
@@ -82,8 +84,6 @@ public class GameWorld {
         wheelJointDef2.localAxisA.set(Vector2.Y);
         wheelJointDef2.frequencyHz = 50;
         world.createJoint(wheelJointDef2);
-
-
 
     }
 
