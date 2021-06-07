@@ -1,8 +1,8 @@
 package com.myteam.game;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class InputHandler implements InputProcessor {
@@ -14,40 +14,38 @@ public class InputHandler implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyDown(int keycode) {//это не клавиша вверх, а нажатие на  какую-то клавишу))
         //dx.app.log("INFO","KEY PRESSED");
 
-        Body body = gameWorld.getBody();
-        Body frontWheel = gameWorld.getFrontWheel();
-        Body backWheel = gameWorld.getBackWheel();
+        Body body = gameWorld.getPersonBody();
 
-        if(keycode == Input.Keys.RIGHT){
+        if (keycode == Input.Keys.RIGHT) {
             GameWorld.rightButtonHold = true;
         }
 
-        if(keycode == Input.Keys.LEFT){
+        if (keycode == Input.Keys.LEFT) {
             GameWorld.leftButtonHold = true;
         }
 
-        if(keycode == Input.Keys.SPACE)
-            body.setLinearVelocity(0,0f);
+        if (keycode == Input.Keys.SPACE)
+            body.setLinearVelocity(0, 0f);
 
-        if(keycode == Input.Keys.UP)
-            body.setLinearVelocity(0,-50f);
+        if (keycode == Input.Keys.UP)
+            body.applyForceToCenter(new Vector2(0,-2000000), true);
 
-        if(keycode == Input.Keys.DOWN)
-            body.setLinearVelocity(0,50f);
+//        if (keycode == Input.Keys.DOWN)
+//            body.setLinearVelocity(0, 50f);
 
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if(keycode == Input.Keys.RIGHT){
+        if (keycode == Input.Keys.RIGHT) {
             GameWorld.rightButtonHold = false;
         }
 
-        if(keycode == Input.Keys.LEFT){
+        if (keycode == Input.Keys.LEFT) {
             GameWorld.leftButtonHold = false;
         }
         return true;

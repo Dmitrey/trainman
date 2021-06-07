@@ -15,7 +15,6 @@ public class GameRender {
     private Box2DDebugRenderer debugRenderer;
 
     public GameRender(GameWorld gameWorld) {
-
         this.gameWorld = gameWorld;
         cam = new OrthographicCamera();
         cam.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -28,7 +27,7 @@ public class GameRender {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        cam.position.set(gameWorld.getCarBody().getPosition().x, gameWorld.getCarBody().getPosition().y, 0);
+        cam.position.set(gameWorld.getPersonBody().getPosition().x, gameWorld.getPersonBody().getPosition().y, 0);
         cam.update();
 
         //Gdx.app.log("Render","is working");
