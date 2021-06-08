@@ -12,7 +12,7 @@ public class Car extends Builder {
     private Body frontWheel;
 
     public void compileCar(){
-        carBody = createRectangleBody(BodyDef.BodyType.DynamicBody, new Vector2(200,600), 100,30, 5f, 2f);
+        carBody = createRectangleBody(BodyDef.BodyType.DynamicBody, new Vector2(200,600), 100,30, 5f, 2f,1);
         frontWheel = createCircleBody(BodyDef.BodyType.DynamicBody, new Vector2(100,610), 25, 0.5f, 0.1f);
         backWheel = createCircleBody(BodyDef.BodyType.DynamicBody, new Vector2(100,610), 25, 0.5f, 0.1f);
 

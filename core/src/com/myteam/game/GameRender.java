@@ -17,7 +17,7 @@ public class GameRender {
     public GameRender(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         cam = new OrthographicCamera();
-        cam.setToOrtho(true, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        cam.setToOrtho(true, Gdx.graphics.getWidth()/20, Gdx.graphics.getHeight()/20);
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
         debugRenderer = new Box2DDebugRenderer();

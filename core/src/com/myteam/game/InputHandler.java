@@ -1,5 +1,6 @@
 package com.myteam.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
@@ -30,8 +31,8 @@ public class InputHandler implements InputProcessor {
         if (keycode == Input.Keys.SPACE)
             body.setLinearVelocity(0, 0f);
 
-        if (keycode == Input.Keys.UP)
-            body.applyForceToCenter(new Vector2(0,-2000000), true);
+        if (keycode == Input.Keys.UP && MyContactListener.personOnGround)
+            body.applyForceToCenter(new Vector2(0,-100000), true);
 
 //        if (keycode == Input.Keys.DOWN)
 //            body.setLinearVelocity(0, 50f);
@@ -59,6 +60,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.log("Corrdinates:"," X: "+screenX+" Y: "+screenY);
         return false;
     }
 
@@ -74,6 +76,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+
         return false;
     }
 

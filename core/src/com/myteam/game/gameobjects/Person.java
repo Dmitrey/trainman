@@ -11,7 +11,7 @@ public class Person extends Builder {
     private Body hand;
 
     public void compilePerson(){
-        body = createPersonBody(BodyDef.BodyType.DynamicBody, new Vector2(300,400), 0.5f,2,64f,0);
+        body = createPersonBody(BodyDef.BodyType.DynamicBody, new Vector2(70,46), 0.5f,2,64f,0,5);
         //hand = createRectangleBody(BodyDef.BodyType.DynamicBody, new Vector2(350,400), 30,10,1,1);
         RevoluteJointDef bodyHandJoint = new RevoluteJointDef();
         bodyHandJoint.bodyA = body;
@@ -23,7 +23,7 @@ public class Person extends Builder {
     }
 
     public Body createPersonBody(BodyDef.BodyType bodyType, Vector2 position,
-                                    float hx, float hy, float density, float restitution) {
+                                    float hx, float hy, float density, float restitution, float friction) {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
@@ -36,6 +36,8 @@ public class Person extends Builder {
         fixtureDef.shape = shape;
         fixtureDef.density = density;   //здесь задается его плотность
         fixtureDef.restitution = restitution;
+        fixtureDef.friction = friction;
+        fixtureDef.filter.categoryBits = CATEGORY_PERSON;
         body.createFixture(fixtureDef);
         shape.dispose();
         return body;

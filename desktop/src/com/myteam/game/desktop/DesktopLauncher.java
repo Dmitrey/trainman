@@ -8,8 +8,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Train Man";
-		config.width = 1600;
-		config.height = 900;
+		config.width = 1200;
+		config.height = 700;
 		config.fullscreen = false;
 //		config.useGL20 = true;
 //		config.useCPUSynch = true;

@@ -4,8 +4,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Builder {
+    protected final short CATEGORY_PERSON = 0x0001;
+    protected final short CATEGORY_GROUND = 0x0002;
 
-    protected static final World world = new World(new Vector2(0, 9.8f), true);
+    protected static final World world = new World(new Vector2(0, 20f), true);
 
     public Body createCircleBody(BodyDef.BodyType bodyType, Vector2 position,
                                  float radius, float density, float restitution) {
@@ -27,7 +29,7 @@ public class Builder {
     }
 
     public Body createRectangleBody(BodyDef.BodyType bodyType, Vector2 position,
-                                    float hx, float hy, float density, float restitution) {
+                                    float hx, float hy, float density, float restitution, float friction) {
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = bodyType;
@@ -39,6 +41,7 @@ public class Builder {
         fixtureDef.shape = shape;
         fixtureDef.density = density;   //здесь задается его плотность
         fixtureDef.restitution = restitution;
+        fixtureDef.friction = friction;
         body.createFixture(fixtureDef);
         shape.dispose();
         return body;

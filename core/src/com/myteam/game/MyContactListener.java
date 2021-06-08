@@ -2,16 +2,16 @@ package com.myteam.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.physics.box2d.*;
 
 public class MyContactListener implements ContactListener {
+
+    public static boolean personOnGround = false;
 
     @Override
     public void beginContact(Contact contact) {
         Gdx.app.log("Contact","is working");
+        personOnGround = true;
 
 //        if((contact.getFixtureA().getBody() == bodyEdgeScreen &&
 //                contact.getFixtureB().getBody() == body2)
@@ -29,7 +29,8 @@ public class MyContactListener implements ContactListener {
 
     @Override
     public void endContact(Contact contact) {
-
+        Gdx.app.log("Contact","no contact");
+        personOnGround = false;
     }
 
     @Override
