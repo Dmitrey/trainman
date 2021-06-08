@@ -31,7 +31,7 @@ public class InputHandler implements InputProcessor {
         if (keycode == Input.Keys.SPACE)
             body.setLinearVelocity(0, 0f);
 
-        if (keycode == Input.Keys.UP && MyContactListener.personOnGround)
+        if (keycode == Input.Keys.UP && MyContactListener.contactsAmount > 0)
             body.applyForceToCenter(new Vector2(0,-100000), true);
 
 //        if (keycode == Input.Keys.DOWN)
