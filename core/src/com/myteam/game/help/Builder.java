@@ -42,6 +42,7 @@ public class Builder {
         fixtureDef.density = density;   //здесь задается его плотность
         fixtureDef.restitution = restitution;
         fixtureDef.friction = friction;
+        fixtureDef.filter.categoryBits = CATEGORY_GROUND;
         body.createFixture(fixtureDef);
         shape.dispose();
         return body;

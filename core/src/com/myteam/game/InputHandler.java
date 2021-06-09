@@ -4,28 +4,32 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.myteam.game.gameobjects.Person;
 
 public class InputHandler implements InputProcessor {
 
     private GameWorld gameWorld;
+    private Body hand;
 
     public InputHandler(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
+        hand = gameWorld.getPerson().getHand();
     }
 
     @Override
     public boolean keyDown(int keycode) {//это не клавиша вверх, а нажатие на  какую-то клавишу))
         //dx.app.log("INFO","KEY PRESSED");
 
-        Body body = gameWorld.getPersonBody();
+        Body body = gameWorld.getPerson().getBody();
 
         if (keycode == Input.Keys.RIGHT) {
-            GameWorld.rightButtonHold = true;
+            Person.rightButtonHold = true;
         }
 
         if (keycode == Input.Keys.LEFT) {
-            GameWorld.leftButtonHold = true;
+            Person.leftButtonHold = true;
         }
 
         if (keycode == Input.Keys.SPACE)
@@ -43,11 +47,11 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.RIGHT) {
-            GameWorld.rightButtonHold = false;
+            Person.rightButtonHold = false;
         }
 
         if (keycode == Input.Keys.LEFT) {
-            GameWorld.leftButtonHold = false;
+            Person.leftButtonHold = false;
         }
         return true;
     }
@@ -76,7 +80,11 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
+        Vector2 sp2 = new Vector2(sp3.x, sp3.y);
+        //System.out.println("coord"+sp2.x +" "+ sp2.y);
 
+        hand.setTransform(new Vector2(hand.getPosition().x, hand.getPosition().y), screenX);
         return false;
     }
 
