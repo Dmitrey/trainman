@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.myteam.game.InputHandler;
 import com.myteam.game.help.Builder;
 
 public class Person extends Builder {
@@ -16,7 +17,8 @@ public class Person extends Builder {
 
     public Person(){
         body = createPersonBody(BodyDef.BodyType.DynamicBody, new Vector2(70,46), 0.5f,2,64f,0,5);
-        hand = createPersonHand(BodyDef.BodyType.DynamicBody, new Vector2(70,45), 0.25f,1f,64f,0,5);
+        hand = createPersonHand(BodyDef.BodyType.DynamicBody, new Vector2(70,45), 0.25f,0.75f,0,0,5);
+        //hand.setAngularVelocity(10);
         RevoluteJointDef bodyHandJoint = new RevoluteJointDef();
         bodyHandJoint.initialize(body,hand,new Vector2(70,46));
         world.createJoint(bodyHandJoint);
@@ -79,6 +81,13 @@ public class Person extends Builder {
         if(body.getLinearVelocity().x < -10f)
             body.setLinearVelocity(-10,body.getLinearVelocity().y);
 
+//        if (hand.getAngle() < InputHandler.angle + 1 && hand.getAngle() > InputHandler.angle - 1){
+//            hand.setAngularVelocity(1000);
+//            System.out.println("correcting...");
+//        }else {
+//            hand.setAngularVelocity(0);
+//            System.out.println("stop");
+//        }
         //hand.setTransform(hand.getPosition().x, hand.getPosition().y, 1.5f);
     }
 

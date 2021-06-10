@@ -12,10 +12,13 @@ public class InputHandler implements InputProcessor {
 
     private GameWorld gameWorld;
     private Body hand;
+    private Body personBody;
+    public static float angle;
 
     public InputHandler(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         hand = gameWorld.getPerson().getHand();
+        personBody = gameWorld.getPerson().getBody();
     }
 
     @Override
@@ -36,7 +39,7 @@ public class InputHandler implements InputProcessor {
             body.setLinearVelocity(0, 0f);
 
         if (keycode == Input.Keys.UP && MyContactListener.contactsAmount > 0)
-            body.applyForceToCenter(new Vector2(0,-100000), true);
+            body.applyForceToCenter(new Vector2(0,-150000), true);
 
 //        if (keycode == Input.Keys.DOWN)
 //            body.setLinearVelocity(0, 50f);
@@ -83,8 +86,17 @@ public class InputHandler implements InputProcessor {
         Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
         Vector2 sp2 = new Vector2(sp3.x, sp3.y);
         //System.out.println("coord"+sp2.x +" "+ sp2.y);
-
-        hand.setTransform(new Vector2(hand.getPosition().x, hand.getPosition().y), screenX);
+        float pril = sp3.x - hand.getWorldCenter().x;
+        float protiv = sp3.y-(hand.getWorldCenter().y);
+        System.out.println("pril " + (sp3.x - personBody.getWorldCenter().x));
+        System.out.println("protiv " + (sp3.y-(personBody.getWorldCenter().y - 0.5f)));
+        angle = ((float) Math.atan(protiv/pril));
+        System.out.println("angle: " + angle/3.14f*180);
+        float dX = (float) (Math.cos(angle) );
+        float dY = (float) (Math.sin(angle) );
+        System.out.println("dX " + dX);
+        System.out.println("dY " + dY);
+        hand.setTransform(new Vector2(personBody.getPosition().x + dX, personBody.getPosition().y + dY), angle + 3.12f/2);
         return false;
     }
 

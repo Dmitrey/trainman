@@ -7,7 +7,7 @@ public class Builder {
     protected final short CATEGORY_PERSON = 0x0001;
     protected final short CATEGORY_GROUND = 0x0002;
 
-    protected static final World world = new World(new Vector2(0, 20f), true);
+    protected static final World world = new World(new Vector2(0, 20), true);
 
     public Body createCircleBody(BodyDef.BodyType bodyType, Vector2 position,
                                  float radius, float density, float restitution) {
