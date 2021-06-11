@@ -1,10 +1,8 @@
 package com.myteam.game.gameobjects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.myteam.game.InputHandler;
 import com.myteam.game.help.Builder;
 
 public class Person extends Builder {
@@ -69,7 +67,6 @@ public class Person extends Builder {
     }
 
     public void update(){
-        world.step(Gdx.graphics.getDeltaTime(), 8, 4);
         if (rightButtonHold) {
             body.applyForceToCenter(new Vector2(20000,0),true);
         }

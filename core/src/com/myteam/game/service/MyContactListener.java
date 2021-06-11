@@ -1,4 +1,4 @@
-package com.myteam.game;
+package com.myteam.game.service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;

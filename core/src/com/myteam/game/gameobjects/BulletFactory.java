@@ -6,12 +6,6 @@ import com.myteam.game.help.Builder;
 
 public class BulletFactory extends Builder {
 
-//    public World world;
-//
-//    public BulletFactory(World world){
-//        this.world = world;
-//    }
-
     public Body getBullet(Vector2 from, Vector2 to){
         Body bullet = createBullet(BodyDef.BodyType.DynamicBody, from,
                 0.2f,0.1f,64f,0,0);

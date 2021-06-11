@@ -1,4 +1,4 @@
-package com.myteam.game;
+package com.myteam.game.service;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.myteam.game.GameRender;
+import com.myteam.game.GameWorld;
 import com.myteam.game.gameobjects.BulletFactory;
 import com.myteam.game.gameobjects.Person;
 

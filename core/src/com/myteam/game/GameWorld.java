@@ -3,17 +3,20 @@ package com.myteam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.myteam.game.gameobjects.FallingObjectsFactory;
 import com.myteam.game.gameobjects.Person;
 import com.myteam.game.help.Builder;
+import com.myteam.game.service.MyContactListener;
+import com.myteam.game.service.MyFilter;
 
 public class GameWorld extends Builder {
 
     private final Person person;
+    private final FallingObjectsFactory fallingObjectsFactory;
 
     final float PIXELS_TO_METERS = 100f;
 
     public GameWorld() {
-        initGameObjects();
         world.setContactListener(new MyContactListener());
         world.setContactFilter(new MyFilter());
         //создание земли
@@ -29,23 +32,19 @@ public class GameWorld extends Builder {
         fixtureDefGround.filter.categoryBits = CATEGORY_GROUND;
         groundBody.createFixture(fixtureDefGround);
 
-//        float[] points2 = new float[]{620, 460, 800, 400, 900, 460};
-//        PolygonShape polygonShapeExp = new PolygonShape();
-//        polygonShapeExp.set(points2);
-//        Body ramp2 = createRectangleBodyWithCustomShape(BodyDef.BodyType.StaticBody, 0.5f, 1, polygonShapeExp);
         this.person = new Person();
+        fallingObjectsFactory = new FallingObjectsFactory();
 
         for (int i = 5; i < 500; i+=10) {
             createRectangleBody(BodyDef.BodyType.StaticBody,new Vector2(i,60),2,1,0,0,1);
         }
     }
 
-    private void initGameObjects() {
-
-    }
-
     public void update() {
+        world.step(Gdx.graphics.getDeltaTime(), 8, 4);
+        System.out.println("time " + Gdx.graphics.getDeltaTime());
         person.update();
+        fallingObjectsFactory.createFallingObjects();
     }
 
     public Person getPerson() {
