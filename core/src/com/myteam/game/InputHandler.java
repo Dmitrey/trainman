@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.myteam.game.gameobjects.BulletFactory;
 import com.myteam.game.gameobjects.Person;
 
 public class InputHandler implements InputProcessor {
@@ -13,12 +14,15 @@ public class InputHandler implements InputProcessor {
     private GameWorld gameWorld;
     private Body hand;
     private Body personBody;
+    private BulletFactory bulletFactory;
+
     public static float angle;
 
     public InputHandler(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         hand = gameWorld.getPerson().getHand();
         personBody = gameWorld.getPerson().getBody();
+        bulletFactory = new BulletFactory();
     }
 
     @Override
@@ -39,7 +43,7 @@ public class InputHandler implements InputProcessor {
             body.setLinearVelocity(0, 0f);
 
         if (keycode == Input.Keys.UP && MyContactListener.contactsAmount > 0)
-            body.applyForceToCenter(new Vector2(0,-150000), true);
+            body.applyForceToCenter(new Vector2(0, -150000), true);
 
 //        if (keycode == Input.Keys.DOWN)
 //            body.setLinearVelocity(0, 50f);
@@ -67,7 +71,15 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.log("Corrdinates:"," X: "+screenX+" Y: "+screenY);
+        Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
+        Gdx.app.log("Corrdinates:", " X: " + sp3.x + " Y: " + sp3.y);
+        float fromX = gameWorld.getPerson().getHand().getPosition().x;
+        float fromY = gameWorld.getPerson().getHand().getPosition().y;
+        float velX = sp3.x-fromX;
+        float velY = sp3.y-fromY;
+        bulletFactory.getBullet(gameWorld.getPerson().getHand().getWorldCenter(),new Vector2(velX*10,velY*10));
+        //System.out.println("from: "+fromX+" "+fromY+" to: " + sp3.x + " " + sp3.y);
+
         return false;
     }
 
@@ -86,13 +98,13 @@ public class InputHandler implements InputProcessor {
         Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
         float pril = sp3.x - personBody.getWorldCenter().x;
         float protiv = sp3.y - personBody.getWorldCenter().y;
-        angle = ((float) Math.atan(protiv/pril));
-        if(pril<0)
-            angle+=3.14f;
-        System.out.println("angle: " + angle/3.14f*180);
-        float dX = (float) (Math.cos(angle) );
-        float dY = (float) (Math.sin(angle) );
-        hand.setTransform(new Vector2(personBody.getPosition().x + dX, personBody.getPosition().y + dY), angle + 3.12f/2);
+        angle = ((float) Math.atan(protiv / pril));
+        if (pril < 0)
+            angle += 3.14f;
+        //System.out.println("angle: " + angle / 3.14f * 180);
+        float dX = (float) (Math.cos(angle));
+        float dY = (float) (Math.sin(angle));
+        hand.setTransform(new Vector2(personBody.getPosition().x + dX, personBody.getPosition().y + dY), angle + 3.12f / 2);
         return false;
     }
 
