@@ -84,18 +84,14 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
-        Vector2 sp2 = new Vector2(sp3.x, sp3.y);
-        //System.out.println("coord"+sp2.x +" "+ sp2.y);
-        float pril = sp3.x - hand.getWorldCenter().x;
-        float protiv = sp3.y-(hand.getWorldCenter().y);
-        System.out.println("pril " + (sp3.x - personBody.getWorldCenter().x));
-        System.out.println("protiv " + (sp3.y-(personBody.getWorldCenter().y - 0.5f)));
+        float pril = sp3.x - personBody.getWorldCenter().x;
+        float protiv = sp3.y - personBody.getWorldCenter().y;
         angle = ((float) Math.atan(protiv/pril));
+        if(pril<0)
+            angle+=3.14f;
         System.out.println("angle: " + angle/3.14f*180);
         float dX = (float) (Math.cos(angle) );
         float dY = (float) (Math.sin(angle) );
-        System.out.println("dX " + dX);
-        System.out.println("dY " + dY);
         hand.setTransform(new Vector2(personBody.getPosition().x + dX, personBody.getPosition().y + dY), angle + 3.12f/2);
         return false;
     }
