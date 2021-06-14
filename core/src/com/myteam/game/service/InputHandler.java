@@ -81,7 +81,6 @@ public class InputHandler implements InputProcessor {
         float velY = sp3.y-fromY;
         bulletFactory.getBullet(gameWorld.getPerson().getHand().getWorldCenter(),new Vector2(velX*10,velY*10));
         //System.out.println("from: "+fromX+" "+fromY+" to: " + sp3.x + " " + sp3.y);
-
         return false;
     }
 
@@ -98,12 +97,8 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
-        float pril = sp3.x - personBody.getWorldCenter().x;
-        float protiv = sp3.y - personBody.getWorldCenter().y;
-        angle = ((float) Math.atan(protiv / pril));
-        if (pril < 0)
-            angle += 3.14f;
-        //System.out.println("angle: " + angle / 3.14f * 180);
+        Vector2 x = new Vector2(sp3.x,sp3.y).sub(personBody.getWorldCenter());
+        angle = x.angleRad();
         float dX = (float) (Math.cos(angle));
         float dY = (float) (Math.sin(angle));
         hand.setTransform(new Vector2(personBody.getPosition().x + dX, personBody.getPosition().y + dY), angle + 3.12f / 2);

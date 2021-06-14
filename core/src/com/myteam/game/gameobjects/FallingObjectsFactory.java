@@ -24,13 +24,6 @@ public class FallingObjectsFactory extends Builder {
             objs.add(new FallingObject(objX,objY));
             delay = 0;
         }
-//        for (FallingObject obj: objs) {
-//            if (obj.getObjectBody().isActive() && obj.getLifeTime() > 3){
-//                world.destroyBody(obj.getObjectBody());
-//            }else {
-//                obj.setLifeTime(obj.getLifeTime() + Gdx.graphics.getDeltaTime());
-//            }
-//        }
     }
 
 

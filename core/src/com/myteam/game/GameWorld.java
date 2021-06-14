@@ -32,7 +32,8 @@ public class GameWorld extends Builder {
         fixtureDefGround.filter.categoryBits = CATEGORY_GROUND;
         groundBody.createFixture(fixtureDefGround);
 
-        this.person = new Person();
+        person = new Person();
+        //new Person(100,46);
         fallingObjectsFactory = new FallingObjectsFactory();
 
         for (int i = 5; i < 500; i+=10) {
@@ -42,7 +43,7 @@ public class GameWorld extends Builder {
 
     public void update() {
         world.step(Gdx.graphics.getDeltaTime(), 8, 4);
-        System.out.println("time " + Gdx.graphics.getDeltaTime());
+        System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
         person.update();
         fallingObjectsFactory.createFallingObjects();
     }
