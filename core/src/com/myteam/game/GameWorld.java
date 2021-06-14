@@ -3,6 +3,7 @@ package com.myteam.game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.myteam.game.gameobjects.Enemy;
 import com.myteam.game.gameobjects.FallingObjectsFactory;
 import com.myteam.game.gameobjects.Person;
 import com.myteam.game.help.Builder;
@@ -13,6 +14,7 @@ public class GameWorld extends Builder {
 
     private final Person person;
     private final FallingObjectsFactory fallingObjectsFactory;
+    private final Enemy enemy;
 
     final float PIXELS_TO_METERS = 100f;
 
@@ -33,12 +35,15 @@ public class GameWorld extends Builder {
         groundBody.createFixture(fixtureDefGround);
 
         person = new Person();
+
         //new Person(100,46);
         fallingObjectsFactory = new FallingObjectsFactory();
 
         for (int i = 5; i < 500; i+=10) {
             createRectangleBody(BodyDef.BodyType.StaticBody,new Vector2(i,60),2,1,0,0,1);
         }
+
+        enemy = new Enemy(80,46);
     }
 
     public void update() {
@@ -46,6 +51,7 @@ public class GameWorld extends Builder {
         System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
         person.update();
         fallingObjectsFactory.createFallingObjects();
+        enemy.update();
     }
 
     public Person getPerson() {
