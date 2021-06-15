@@ -1,10 +1,7 @@
 package com.myteam.game.gameobjects;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.myteam.game.help.Builder;
 
@@ -15,6 +12,7 @@ public class Enemy extends Builder {
     private final float spawnX;
     private final float spawnY;
     private boolean goRight = true;
+    private boolean eyeContact = false;
 
     public Enemy(float posX, float posY){
         spawnX = posX;
@@ -35,7 +33,26 @@ public class Enemy extends Builder {
     public void enemyJump(){
         body.applyForceToCenter(new Vector2(0, -150000), true);
     }
-    public void update(){
+
+    public void update(Person person){
+        eyeContact = false;
+        RayCastCallback rayCastCallback = (fixture, point, normal, fraction) -> {
+            if (fixture.getFilterData().categoryBits == CATEGORY_ENEMY || fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
+                eyeContact = true;
+                return 0;
+            }
+            return 0;
+        };
+
+        world.rayCast(rayCastCallback, body.getWorldCenter(), person.getBody().getWorldCenter());
+
+        System.out.println(eyeContact);
+        if (eyeContact){
+
+        }else patrol();
+    }
+
+    public void patrol(){
         float pos = body.getWorldCenter().x;
         if (goRight)
             enemyGoRight();
@@ -52,6 +69,7 @@ public class Enemy extends Builder {
         if(body.getLinearVelocity().x < -10f)
             body.setLinearVelocity(-10,body.getLinearVelocity().y);
     }
+
     private Body createPersonBody(BodyDef.BodyType bodyType, Vector2 position,
                                   float hx, float hy, float density, float restitution, float friction) {
 

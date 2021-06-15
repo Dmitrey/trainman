@@ -9,7 +9,6 @@ public class Builder {
     protected final short CATEGORY_BULLET = 0x0004;
     protected final short CATEGORY_ENEMY = 0x0008;
 
-
     protected static final World world = new World(new Vector2(0, 20), true);
 
     public Body createCircleBody(BodyDef.BodyType bodyType, Vector2 position,

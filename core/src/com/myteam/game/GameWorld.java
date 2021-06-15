@@ -44,6 +44,8 @@ public class GameWorld extends Builder {
         }
 
         enemy = new Enemy(80,46);
+
+        createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),5,5,0,0,0);
     }
 
     public void update() {
@@ -51,7 +53,7 @@ public class GameWorld extends Builder {
         System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
         person.update();
         fallingObjectsFactory.createFallingObjects();
-        enemy.update();
+        enemy.update(person);
     }
 
     public Person getPerson() {
