@@ -77,9 +77,9 @@ public class InputHandler implements InputProcessor {
         Gdx.app.log("Corrdinates:", " X: " + sp3.x + " Y: " + sp3.y);
         float fromX = gameWorld.getPerson().getHand().getPosition().x;
         float fromY = gameWorld.getPerson().getHand().getPosition().y;
-        float velX = sp3.x-fromX;
-        float velY = sp3.y-fromY;
-        bulletFactory.getBullet(gameWorld.getPerson().getHand().getWorldCenter(),new Vector2(velX*10,velY*10));
+        float velX = sp3.x - fromX;
+        float velY = sp3.y - fromY;
+        bulletFactory.getBullet(gameWorld.getPerson().getHand().getWorldCenter(), new Vector2(velX * 10, velY * 10));
         //System.out.println("from: "+fromX+" "+fromY+" to: " + sp3.x + " " + sp3.y);
         return false;
     }
@@ -97,7 +97,7 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         Vector3 sp3 = GameRender.getCam().unproject(new Vector3(screenX, screenY, 0));
-        Vector2 x = new Vector2(sp3.x,sp3.y).sub(personBody.getWorldCenter());
+        Vector2 x = new Vector2(sp3.x, sp3.y).sub(personBody.getWorldCenter());
         angle = x.angleRad();
         float dX = (float) (Math.cos(angle));
         float dY = (float) (Math.sin(angle));

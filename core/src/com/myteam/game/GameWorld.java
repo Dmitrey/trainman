@@ -13,19 +13,20 @@ import com.myteam.game.service.MyFilter;
 public class GameWorld extends Builder {
 
     private final Person person;
-    private final FallingObjectsFactory fallingObjectsFactory;
+    private FallingObjectsFactory fallingObjectsFactory;
     private final Enemy enemy;
+    private final Body groundBody;
 
     final float PIXELS_TO_METERS = 100f;
 
     public GameWorld() {
-        world.setContactListener(new MyContactListener());
+        world.setContactListener(new MyContactListener(this));
         world.setContactFilter(new MyFilter());
         //создание земли
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;
         groundBodyDef.position.set(0, 0);
-        Body groundBody = world.createBody(groundBodyDef);
+        groundBody = world.createBody(groundBodyDef);
         EdgeShape edgeShapeGround = new EdgeShape();
         edgeShapeGround.set(0, 60, Gdx.graphics.getWidth() * 5, 60);
         FixtureDef fixtureDefGround = new FixtureDef();
@@ -37,26 +38,31 @@ public class GameWorld extends Builder {
         person = new Person();
 
         //new Person(100,46);
-        fallingObjectsFactory = new FallingObjectsFactory();
+        //fallingObjectsFactory = new FallingObjectsFactory();
 
         for (int i = 5; i < 500; i+=10) {
             createRectangleBody(BodyDef.BodyType.StaticBody,new Vector2(i,60),2,1,0,0,1);
         }
 
-        enemy = new Enemy(80,46);
+        enemy = new Enemy(100,46, "enemy1");
 
-        createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),5,5,0,0,0);
+        createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),5,5,0,0,1);
     }
 
     public void update() {
         world.step(Gdx.graphics.getDeltaTime(), 8, 4);
-        System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
+        //System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
         person.update();
-        fallingObjectsFactory.createFallingObjects();
+        //fallingObjectsFactory.createFallingObjects();
         enemy.update(person);
+        groundBody.setActive(true);
     }
 
     public Person getPerson() {
         return person;
+    }
+
+    public Enemy getEnemy() {
+        return enemy;
     }
 }

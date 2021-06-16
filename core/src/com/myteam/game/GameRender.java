@@ -15,7 +15,7 @@ public class GameRender {
     public GameRender(GameWorld gameWorld) {
         this.gameWorld = gameWorld;
         cam = new OrthographicCamera();
-        cam.setToOrtho(true, Gdx.graphics.getWidth()/20, Gdx.graphics.getHeight()/20);
+        cam.setToOrtho(true, Gdx.graphics.getWidth()/10, Gdx.graphics.getHeight()/10);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.setProjectionMatrix(cam.combined);
         debugRenderer = new Box2DDebugRenderer();
@@ -25,7 +25,7 @@ public class GameRender {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        cam.position.set(gameWorld.getPerson().getBody().getPosition().x, gameWorld.getPerson().getBody().getPosition().y, 0);
+        cam.position.set(gameWorld.getPerson().getBody().getPosition(), 0);
         cam.update();
 
         //Gdx.app.log("Render","is working");

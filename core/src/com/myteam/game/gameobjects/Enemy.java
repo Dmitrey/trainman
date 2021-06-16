@@ -1,8 +1,12 @@
 package com.myteam.game.gameobjects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.myteam.game.GameRender;
 import com.myteam.game.help.Builder;
 
 public class Enemy extends Builder {
@@ -11,52 +15,84 @@ public class Enemy extends Builder {
     private final Body hand;
     private final float spawnX;
     private final float spawnY;
+    private final String name;
     private boolean goRight = true;
     private boolean eyeContact = false;
+    public boolean haveContact;
+    public float enemyTimeNoMove;
 
-    public Enemy(float posX, float posY){
+    ShapeRenderer sr = new ShapeRenderer();
+
+    public Enemy(float posX, float posY, String name) {
+        this.name = name;
         spawnX = posX;
         spawnY = posY;
-        body = createPersonBody(BodyDef.BodyType.DynamicBody, new Vector2(posX,posY), 0.5f,2,64f,0,5);
-        hand = createPersonHand(BodyDef.BodyType.DynamicBody, new Vector2(posX,posY-1), 0.25f,0.75f,0,0,5);
+        body = createPersonBody(BodyDef.BodyType.DynamicBody, new Vector2(posX, posY), 0.5f, 2, 64f, 0, 1);
+        hand = createPersonHand(BodyDef.BodyType.DynamicBody, new Vector2(posX, posY - 1), 0.25f, 0.75f, 0, 0, 1);
         RevoluteJointDef bodyHandJoint = new RevoluteJointDef();
-        bodyHandJoint.initialize(body,hand,new Vector2(posX,posY));
+        bodyHandJoint.initialize(body, hand, new Vector2(posX, posY));
         world.createJoint(bodyHandJoint);
     }
 
-    public void enemyGoLeft(){
-        body.applyForceToCenter(new Vector2(-20000,0),true);
-    }
-    public void enemyGoRight(){
-        body.applyForceToCenter(new Vector2(20000,0),true);
-    }
-    public void enemyJump(){
-        body.applyForceToCenter(new Vector2(0, -150000), true);
+    public void enemyGoLeft() {
+        if (haveContact)
+            body.applyForceToCenter(new Vector2(-20000, 0), true);
     }
 
-    public void update(Person person){
-        eyeContact = false;
-        RayCastCallback rayCastCallback = (fixture, point, normal, fraction) -> {
-            if (fixture.getFilterData().categoryBits == CATEGORY_ENEMY || fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
-                eyeContact = true;
-                return 0;
+    public void enemyGoRight() {
+        if (haveContact)
+            body.applyForceToCenter(new Vector2(20000, 0), true);
+    }
+
+    public void enemyJump() {
+        if (haveContact)
+            body.applyForceToCenter(new Vector2(0, -150000), true);
+    }
+
+    public void update(Person person) {
+        //System.out.println("canJump " + haveContact);
+        checkEyeContact(person);
+        //System.out.println(eyeContact);
+        if (eyeContact) {
+            pursuit(person);
+        } else patrol();
+    }
+
+    private void pursuit(Person person) {
+        Vector2 pBody = person.getBody().getWorldCenter();
+        Vector2 eBody = body.getWorldCenter();
+
+        if (eBody.x > pBody.x + 15) {
+            enemyGoLeft();
+            enemyTimeNoMove += Gdx.graphics.getDeltaTime();
+            if (body.getLinearVelocity().x == 0 && enemyTimeNoMove > 1) {
+                enemyJump();
+                enemyTimeNoMove = 0;
             }
-            return 0;
-        };
+        }
 
-        world.rayCast(rayCastCallback, body.getWorldCenter(), person.getBody().getWorldCenter());
+        if (eBody.x < pBody.x - 15) {
+            enemyGoRight();
+            enemyTimeNoMove += Gdx.graphics.getDeltaTime();
+            if (body.getLinearVelocity().x == 0 && enemyTimeNoMove > 1) {
+                enemyJump();
+                enemyTimeNoMove = 0;
+            }
+        }
 
-        System.out.println(eyeContact);
-        if (eyeContact){
+        if (body.getLinearVelocity().x > 10f)
+            body.setLinearVelocity(10, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x < -10f)
+            body.setLinearVelocity(-10, body.getLinearVelocity().y);
 
-        }else patrol();
     }
 
-    public void patrol(){
+    public void patrol() {
         float pos = body.getWorldCenter().x;
         if (goRight)
             enemyGoRight();
         else enemyGoLeft();
+
         if (pos >= spawnX + 10)
             goRight = false;
         if (pos <= spawnX - 10)
@@ -64,10 +100,46 @@ public class Enemy extends Builder {
 
         if (body.getLinearVelocity().x == 0)
             enemyJump();
-        if(body.getLinearVelocity().x > 10f)
-            body.setLinearVelocity(10,body.getLinearVelocity().y);
-        if(body.getLinearVelocity().x < -10f)
-            body.setLinearVelocity(-10,body.getLinearVelocity().y);
+
+        if (body.getLinearVelocity().x > 10f)
+            body.setLinearVelocity(10, body.getLinearVelocity().y);
+        if (body.getLinearVelocity().x < -10f)
+            body.setLinearVelocity(-10, body.getLinearVelocity().y);
+    }
+
+    private void checkEyeContact(Person person) {
+        eyeContact = false;
+
+        RayCastCallback rayCastCallback = (fixture, point, normal, fraction) -> {
+            sr.begin(ShapeRenderer.ShapeType.Line);
+            Vector3 vBody = GameRender.getCam().project(new Vector3(body.getPosition().x, body.getPosition().y, 0));
+            Vector3 vPoint = GameRender.getCam().project(new Vector3(point.x, point.y, 0));
+            sr.line(vBody.x, vBody.y, vPoint.x, vPoint.y);
+            sr.end();
+            if (fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
+                eyeContact = true;
+                return 0;
+            }
+            return 0;
+        };
+        world.rayCast(rayCastCallback, body.getWorldCenter(), new Vector2(person.getBody().getWorldCenter().x,person.getBody().getWorldCenter().y));
+//        QueryCallback queryCallback = new QueryCallback() {
+//            @Override
+//            public boolean reportFixture(Fixture fixture) {
+//                if (fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
+//                    eyeContact = true;
+//                    return true;
+//                }
+//            return false;
+//            }
+//        };
+        System.out.println(eyeContact);
+//        Vector3 lower = GameRender.getCam().project(new Vector3(body.getWorldCenter().x - 5, body.getWorldCenter().y - 5, 0));
+//        Vector3 upper = GameRender.getCam().project(new Vector3(body.getWorldCenter().x + 5,body.getWorldCenter().x + 5, 0));
+//        sr.begin(ShapeRenderer.ShapeType.Line);
+//        //sr.polygon(new float[]{lower.x ,lower.y ,lower.x ,upper.y,upper.x,upper.y,upper.x,lower.y});
+//        sr.end();
+//        world.QueryAABB(queryCallback,lower.x ,lower.y ,upper.x ,upper.y);
     }
 
     private Body createPersonBody(BodyDef.BodyType bodyType, Vector2 position,
@@ -87,6 +159,7 @@ public class Enemy extends Builder {
         fixtureDef.friction = friction;
         fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
         body.createFixture(fixtureDef);
+        body.setUserData(name);
         shape.dispose();
         return body;
     }

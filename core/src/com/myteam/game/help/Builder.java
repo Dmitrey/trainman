@@ -47,6 +47,7 @@ public class Builder {
         fixtureDef.filter.categoryBits = CATEGORY_GROUND;
         body.createFixture(fixtureDef);
         shape.dispose();
+        body.setActive(true);
         return body;
     }
 

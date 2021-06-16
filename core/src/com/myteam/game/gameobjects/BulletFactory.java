@@ -8,7 +8,7 @@ public class BulletFactory extends Builder {
 
     public Body getBullet(Vector2 from, Vector2 to){
         Body bullet = createBullet(BodyDef.BodyType.DynamicBody, from,
-                0.2f,0.1f,64f,0,0);
+                2f,1f,64f,0,1);
         bullet.setLinearVelocity(to);
         return bullet;
     }
