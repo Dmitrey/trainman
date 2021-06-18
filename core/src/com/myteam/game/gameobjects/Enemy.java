@@ -20,8 +20,9 @@ public class Enemy extends Builder {
     private boolean eyeContact = false;
     public boolean haveContact;
     public float enemyTimeNoMove;
-    private float fraction = 1;
+    //private float fraction = 1;
     private Vector2 point;
+//    private Fixture raycastFixture;
 
     ShapeRenderer sr = new ShapeRenderer();
 
@@ -110,18 +111,17 @@ public class Enemy extends Builder {
     }
 
     private void checkEyeContact(Person person) {
-        eyeContact = false;
+
         RayCastCallback rayCastCallback = (fixture, point, normal, fraction) -> {
-            if (this.fraction >= fraction){
-                this.fraction = fraction;
-                this.point = point;
-            }
-            System.out.println("fraction: "+fraction);
-            System.out.println("object: " + fixture.getUserData());
-//            if (fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
-//                eyeContact = true;
-//                return 0;
+//            if (this.fraction >= fraction){
+//                this.fraction = fraction;
+//                this.point = point;
+//                raycastFixture = fixture;
+
+                //System.out.println("Fraction: "+ fraction + " fixture: " + fixture.getFilterData().categoryBits);
 //            }
+            this.point = point;
+            eyeContact = fixture.getFilterData().categoryBits == CATEGORY_PERSON;
             return fraction;
         };
 
@@ -131,25 +131,7 @@ public class Enemy extends Builder {
         Vector3 vPoint = GameRender.getCam().project(new Vector3(this.point.x, this.point.y, 0));
         sr.line(vBody.x, vBody.y, vPoint.x, vPoint.y);
         sr.end();
-
-
-//        QueryCallback queryCallback = new QueryCallback() {
-//            @Override
-//            public boolean reportFixture(Fixture fixture) {
-//                if (fixture.getFilterData().categoryBits == CATEGORY_PERSON) {
-//                    eyeContact = true;
-//                    return false;
-//                }
-//            return false;
-//            }
-//        };
-//
-//        Vector3 lower = GameRender.getCam().project(new Vector3(body.getWorldCenter().x - 5, body.getWorldCenter().y - 5, 0));
-//        Vector3 upper = GameRender.getCam().project(new Vector3(body.getWorldCenter().x + 5,body.getWorldCenter().x + 5, 0));
-//        sr.begin(ShapeRenderer.ShapeType.Line);
-//        sr.polygon(new float[]{lower.x ,lower.y ,lower.x ,upper.y,upper.x,upper.y,upper.x,lower.y});
-//        sr.end();
-//        world.QueryAABB(queryCallback,lower.x ,lower.y ,upper.x ,upper.y);
+        System.out.println(eyeContact);
     }
 
     private Body createPersonBody(BodyDef.BodyType bodyType, Vector2 position,

@@ -49,8 +49,7 @@ public class GameWorld extends Builder {
         enemy = new Enemy(100,46, "enemy1");
 
         groundBody2 = createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),10,5,10,0,1);
-        //groundBody2.getFixtureList().get(0).setUserData("Big ground box");
-        groundBody2.setUserData("Big ground box");
+
     }
 
     public void update() {
