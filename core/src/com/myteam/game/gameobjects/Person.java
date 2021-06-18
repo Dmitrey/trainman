@@ -39,6 +39,7 @@ public class Person extends Builder {
         fixtureDef.filter.categoryBits = CATEGORY_PERSON;
 //        fixtureDef.filter.maskBits = MASK_PERSON;
         body.createFixture(fixtureDef);
+        body.setUserData("person");
         shape.dispose();
         return body;
     }

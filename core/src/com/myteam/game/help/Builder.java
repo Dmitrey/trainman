@@ -38,6 +38,7 @@ public class Builder {
         bodyDef.position.set(position);
         Body body = world.createBody(bodyDef);
         PolygonShape shape = new PolygonShape();
+
         shape.setAsBox(hx, hy);  //здесь задается его размер
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -47,7 +48,6 @@ public class Builder {
         fixtureDef.filter.categoryBits = CATEGORY_GROUND;
         body.createFixture(fixtureDef);
         shape.dispose();
-        body.setActive(true);
         return body;
     }
 

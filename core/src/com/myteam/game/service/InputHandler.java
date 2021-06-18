@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.myteam.game.GameRender;
+import com.myteam.game.GameScreen;
 import com.myteam.game.GameWorld;
 import com.myteam.game.gameobjects.BulletFactory;
 import com.myteam.game.gameobjects.Person;
@@ -41,14 +42,17 @@ public class InputHandler implements InputProcessor {
             Person.leftButtonHold = true;
         }
 
-        if (keycode == Input.Keys.SPACE)
-            body.setLinearVelocity(0, 0f);
+//        if (keycode == Input.Keys.SPACE)
+//            body.setLinearVelocity(0, 0f);
 
         if (keycode == Input.Keys.UP && MyContactListener.contactsAmount > 0)
             body.applyForceToCenter(new Vector2(0, -150000), true);
 
 //        if (keycode == Input.Keys.DOWN)
 //            body.setLinearVelocity(0, 50f);
+
+        if (keycode == Input.Keys.SPACE)
+            GameScreen.paused = !GameScreen.paused;
 
         return true;
     }
@@ -80,7 +84,7 @@ public class InputHandler implements InputProcessor {
         float velX = sp3.x - fromX;
         float velY = sp3.y - fromY;
         bulletFactory.getBullet(gameWorld.getPerson().getHand().getWorldCenter(), new Vector2(velX * 10, velY * 10));
-        //System.out.println("from: "+fromX+" "+fromY+" to: " + sp3.x + " " + sp3.y);
+        System.out.println("from: "+fromX+" "+fromY+" to: " + sp3.x + " " + sp3.y);
         return false;
     }
 

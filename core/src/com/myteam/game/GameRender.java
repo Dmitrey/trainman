@@ -27,19 +27,6 @@ public class GameRender {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         cam.position.set(gameWorld.getPerson().getBody().getPosition(), 0);
         cam.update();
-
-        //Gdx.app.log("Render","is working");
-
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        shapeRenderer.setColor(Color.CORAL);
-//        shapeRenderer.rect(gameWorld.getRectangle().x, gameWorld.getRectangle().y, gameWorld.getRectangle().width,
-//               gameWorld.getRectangle().height);
-//
-//        shapeRenderer.setColor(Color.CYAN);
-//        shapeRenderer.circle(gameWorld.getCircle().x, gameWorld.getCircle().y, gameWorld.getCircle().radius);
-//
-//        shapeRenderer.end();
-
         debugRenderer.render(gameWorld.getWorld(), cam.combined);
     }
 

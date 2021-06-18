@@ -8,6 +8,7 @@ public class GameScreen implements Screen {
 
     private GameRender gameRender;
     private GameWorld gameWorld;
+    public static boolean paused;
 
     public GameScreen() {
         gameWorld = new GameWorld();
@@ -23,8 +24,10 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         //Gdx.app.log("Runtime", "helb");
-        gameRender.render();
-        gameWorld.update();
+        if (!paused) {
+            gameRender.render();
+            gameWorld.update();
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.myteam.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.myteam.game.gameobjects.Enemy;
@@ -16,6 +17,7 @@ public class GameWorld extends Builder {
     private FallingObjectsFactory fallingObjectsFactory;
     private final Enemy enemy;
     private final Body groundBody;
+    private final Body groundBody2;
 
     final float PIXELS_TO_METERS = 100f;
 
@@ -40,22 +42,31 @@ public class GameWorld extends Builder {
         //new Person(100,46);
         //fallingObjectsFactory = new FallingObjectsFactory();
 
-        for (int i = 5; i < 500; i+=10) {
+        for (int i = 5; i < 100; i+=10) {
             createRectangleBody(BodyDef.BodyType.StaticBody,new Vector2(i,60),2,1,0,0,1);
         }
 
         enemy = new Enemy(100,46, "enemy1");
 
-        createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),5,5,0,0,1);
+        groundBody2 = createRectangleBody(BodyDef.BodyType.StaticBody, new Vector2(70f, 54),10,5,10,0,1);
+        //groundBody2.getFixtureList().get(0).setUserData("Big ground box");
+        groundBody2.setUserData("Big ground box");
     }
 
     public void update() {
-        world.step(Gdx.graphics.getDeltaTime(), 8, 4);
-        //System.out.println("time " + 1/Gdx.graphics.getDeltaTime());
+        world.step(Gdx.graphics.getDeltaTime(), 8, 8);
+        System.out.println("FPS: " + 1/Gdx.graphics.getDeltaTime());
         person.update();
         //fallingObjectsFactory.createFallingObjects();
         enemy.update(person);
         groundBody.setActive(true);
+        groundBody2.setActive(true);
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(0, 1, 0, 1);
+        shapeRenderer.rect(50, 50, 10, 3);
+        shapeRenderer.circle(70, 50, 4);
+        shapeRenderer.end();
     }
 
     public Person getPerson() {
