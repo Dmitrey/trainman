@@ -2,6 +2,7 @@ package com.myteam.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.myteam.game.service.InputHandler;
 
 public class GameScreen implements Screen {

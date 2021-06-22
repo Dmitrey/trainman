@@ -20,9 +20,7 @@ public class Enemy extends Builder {
     private boolean eyeContact = false;
     public boolean haveContact;
     public float enemyTimeNoMove;
-    //private float fraction = 1;
     private Vector2 point;
-//    private Fixture raycastFixture;
 
     ShapeRenderer sr = new ShapeRenderer();
 
@@ -49,7 +47,7 @@ public class Enemy extends Builder {
 
     public void enemyJump() {
         if (haveContact)
-            body.applyForceToCenter(new Vector2(0, -150000), true);
+            body.applyForceToCenter(new Vector2(0, -160000), true);
     }
 
     public void update(Person person) {
